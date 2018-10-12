@@ -14,7 +14,11 @@ endtime = "2017-12-31"
 # 0 is error from mean / sd
 # 1 is percent daily change and discretized with threshold
 stand.opt = 1
-threshold = 0
+threshold = 0.2
+# To explore quantiles to determine threshold,
+# set to TRUE
+explore=FALSE
+quant=0.8
 
 # Other parameters
 type_of_data = "Close"
@@ -45,6 +49,16 @@ if (stand.opt == 1){
 	master <- standardize1(master, threshold)
 }
 
+# Explore quantiles to determine threshold to discretize
+if(explore){
+	quantile(sapply(abs(master),
+		function(x)
+		quantile(x,probs=quant,
+		na.rm=TRUE)),
+		probs=c(0.3,0.5,0.7,0.9),
+		na.rm=TRUE)
+}
+
 # Transform master
 if (inverses){master <- inv_master(master)}
 if (tidy){master <-  transp(master)}
@@ -68,4 +82,5 @@ if (! tidy){
 	print(colnames(master));
 	master[1:12, 1:4]
 }
+
 

@@ -60,7 +60,7 @@ standardize1 <- function(master_, threshold_){
 		for (i in 1:(length(master_[,tik])-1)){
 			repl[i] <- (master_[i+1,tik]-master_[i,tik])/master_[i,tik]
 		};
-		print("Discretizing data...")
+		print("Discretizing data...");
 		ifelse(abs(repl) < threshold_, 0, 1);
 		repl[length(repl)+1] <- 0;
 		master_[tik] <- repl;
