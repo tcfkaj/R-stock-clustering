@@ -1,4 +1,4 @@
-# Defines functions for optimizing kkmeans
+## Defines functions for optimizing kkmeans
 
 library(kernlab)
 library(tidyverse)
@@ -6,6 +6,7 @@ library(tidyverse)
 ## Compute the following in Hilbert space
 
 # Computes the Norm - distance squared - in Hilbert space
+
 distance_from_center <- function(x, clusters, kernelMatrix){
 		cluster=which(clusters==clusters[x]);
 		r <- length(cluster);
@@ -24,6 +25,8 @@ distance_from_center <- function(x, clusters, kernelMatrix){
 	return(distance)
 }
 
+# Computes the radius of all clusters, by 95 percent quantile
+
 radii <- function(nclusters, clusters, kernelMatrix){
 	radii <- c();
 	for (i in 1:nclusters){
@@ -37,7 +40,8 @@ radii <- function(nclusters, clusters, kernelMatrix){
 	return(radii)
 }
 
-## Norm between cluster centers i,j  in Hilbert space
+# Norm between cluster centers i,j  in Hilbert space
+
 nbcc <- function(i, j, clusters, kernelMatrix){
 		clusteri <- which(clusters==i);
 		clusterj <- which(clusters==j);
@@ -61,7 +65,7 @@ nbcc <- function(i, j, clusters, kernelMatrix){
 		return(sqrt(ns))
 }
 
-## Compute the seperability matrix
+# Compute the seperability matrix
 
 smat <- function(nclusters, clusters, kernelMatrix){
 			smat <- diag(nclusters);
@@ -78,6 +82,7 @@ smat <- function(nclusters, clusters, kernelMatrix){
 			return(smat)
 }
 
+# Compute dispersion of a cluster in Hilbert space
 
 disp_sq <- function(cluster_number, clusters, kernelMatrix){
 			cluster <- which(clusters==cluster_number);
@@ -89,6 +94,8 @@ disp_sq <- function(cluster_number, clusters, kernelMatrix){
 			return(disp.sq)
 }
 
+# Compute cost in Hilbert space
+
 cost_in_H <- function(nclusters, clusters, kernelMatrix){
 			disp.sq <- c(1:nclusters) %>%
 				sapply(disp_sq, clusters=clusters,
@@ -97,6 +104,7 @@ cost_in_H <- function(nclusters, clusters, kernelMatrix){
 			return(disp.sq)
 }
 
+# Compute best run based on cost in Hilbert space
 
 best_run_H  <- function(x, kernel, ncenters, nruns){
 		kernelM <- kernelMatrix(x, kernel=kernel);
