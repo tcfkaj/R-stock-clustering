@@ -32,14 +32,13 @@ radii <- function(nclusters, clusters, kernelMatrix){
 						distance_from_center,
 						clusters=clusters,
 						kernelMatrix=kernelMatrix);
-		print(distances)
-		radii <- c(radii, unname(quantile(distances, 0.95)))
+		radii <- c(radii, sqrt(unname(quantile(distances, 0.95))))
 		}
 	return(radii)
 }
 
-## Norm squared between cluster centers i,j  in Hilbert space
-nsbcc <- function(i, j, clusters, kernelMatrix){
+## Norm between cluster centers i,j  in Hilbert space
+nbcc <- function(i, j, clusters, kernelMatrix){
 		clusteri <- which(clusters==i);
 		clusterj <- which(clusters==j);
 		a <- length(clusteri);
@@ -59,7 +58,7 @@ nsbcc <- function(i, j, clusters, kernelMatrix){
 			}
 		}
 		ns <- (X/a^2)-(2*Y/(a*b))+(Z/b^2);
-		return(ns)
+		return(sqrt(ns))
 }
 
 ## Compute the seperability matrix
@@ -69,10 +68,10 @@ smat <- function(nclusters, clusters, kernelMatrix){
 			radii <- radii(nclusters, clusters, kernelMatrix);
 			for (i in 1:nclusters){
 				for (j in 1:nclusters){
-					nsbcc <- nsbcc(i=i,j=j,
+					nbcc <- nbcc(i=i,j=j,
 							clusters=clusters,
 							kernelMatrix=kernelMatrix);
-					sep <- (radii[i]+radii[j])/nsbcc;
+					sep <- (radii[i]+radii[j])/nbcc;
 					smat[i,j] <- sep;
 				}
 			}
