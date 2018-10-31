@@ -34,9 +34,9 @@ kernelM <- kernelMatrix(dd, kernel=polydot(degree=3, offset=-5, scale=1))
 cost_in_H(2, clusters, kernelM)
 smat <- smat(nclusters=2, clusters=clusters, kernelMatrix=kernelM)
 smat
-# best <- best_run_H(dd, kernel=polydot(degree=3, offset=-5, scale=1), ncenters=2, nruns=100)
-# best
-# cost_in_H(2, best@.Data, kernelM)
+best <- best_run_H(dd, kernel=polydot(degree=3, offset=-5, scale=1), ncenters=2, nruns=100)
+best
+cost_in_H(2, best@.Data, kernelM)
 # kernelf(dd.kk)
 # length(size(dd.kk))
 ## playing around with kkmeans
