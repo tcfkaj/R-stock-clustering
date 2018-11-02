@@ -4,68 +4,97 @@ ls()
 
 stocks <- as.matrix(master.kkm)
 
+## Elbow
+
+
+# costs <- c()
+#
+#
+# kn.kern <- kernelMatrix(stocks,
+#                         kernel=rbfdot(sigma=0.00003))
+#
+# for (i in 3:12){
+#         print("Computing run with clusters: ")
+#         print(i);
+#         kn <- kkmeans(stocks,
+#                         kernel=rbfdot(sigma=0.00003),
+#                         centers=i);
+#         print("Computing cost for: ")
+#         print(i);
+#         kn.cost <- cost_in_H(nclusters=i,
+#                         clusters=kn@.Data,
+#                         kernelMatrix=kn.kern);
+#         costs <- c(costs, kn.cost)
+# }
+#
+# save(costs, file="elbow3to12.Rda")
 
 ## Gaussian
+
+k=10
 
 print("Computing Gaussian Run...")
 
 print("Computing kernel matrix...")
 
 rbf.kernM <- kernelMatrix(stocks,
-			kernel=rbfdot(sigma=.000000002))
+		kernel=rbfdot(sigma=1))
 
 print("Running kkmeans...")
-rbf.run <- kkmeans(stocks,
-			kernel=rbfdot(sigma=.000000002),
-			centers=10)
+kclust <- kkmeans(stocks,
+		kernel=rbfdot(sigma=1),
+		centers=k)
 
 print("Computing cost...")
-rbf.cost <- cost_in_H(nclusters=10,
-			clusters=rbf.run@.Data,
-			kernelMatrix=rbf.kernM)
+kclust.cost <- cost_in_H(nclusters=k,
+		clusters=kclust@.Data,
+		kernelMatrix=rbf.kernM)
 
 print("Computing seperation matrix...")
-rbf.sepM <- smat(nclusters=10,
-			clusters=rbf.run@.Data,
-			kernelMatrix=rbf.kernM)
+kclust.sepM <- smat(nclusters=k,
+		clusters=kclust@.Data,
+		kernelMatrix=rbf.kernM)
 
 print("RBF Results")
-rbf.run
+kclust
 print("Cost: ")
-rbf.cost
+kclust.cost
 print("Seperation Matrix: ")
-rbf.sepM
+kclust.sepM
 
-save(rbf.kernM, rbf.run, rbf.cost, rbf.sepM, file="run15.Rda")
+save(rbf.kernM, kclust, kclust.cost, kclust.sepM, file="gamma1.Rda")
+
+
+
 
 ## Run 1 poly 2
 
 # print("Computing kernel matrix...")
-# r1.poly2.kernM <- kernelMatrix(stocks,
-#                         kernel=polydot(degree=2))
+# poly2.kernM <- kernelMatrix(stocks,
+#                 kernel=polydot(degree=2))
 #
 # print("Running kkmeans...")
-# r1.poly2 <- kkmeans(stocks,
-#                         kernel=polydot(degree=2),
-#                         centers=10)
+# poly2 <- kkmeans(stocks,
+#                 kernel=polydot(degree=2),
+#                 centers=10)
 #
 # print("Computing cost...")
-# r1.poly2.cost <- cost_in_H(nclusters=10,
-#                         clusters=r1.poly2@.Data,
-#                         kernelMatrix=r1.poly2.kernM)
+# poly2.cost <- cost_in_H(nclusters=10,
+#                 clusters=poly2@.Data,
+#                 kernelMatrix=poly2.kernM)
 #
 # print("Computing seperation matrix...")
-# r1.poly2.sepM <- smat(nclusters=10,
-#                         clusters=r1.poly2@.Data,
-#                         kernelMatrix=r1.poly2.kernM)
+# poly2.sepM <- smat(nclusters=10,
+#                 clusters=poly2@.Data,
+#                 kernelMatrix=poly2.kernM)
 #
 # print("Run 1 Poly 2 Results")
-# r1.poly2
+# poly2
 # print("Cost: ")
-# r1.poly2.cost
+# poly2.cost
 # print("Seperation Matrix: ")
-# r1.poly2.sepM
-
+# poly2.sepM
+# save(poly2.kernM, poly2, poly2.cost, poly2.sepM, file="poly2.Rda")
 
 ## Run 2 poly 3
 

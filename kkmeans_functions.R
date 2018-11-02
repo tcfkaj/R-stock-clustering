@@ -5,7 +5,7 @@ library(tidyverse)
 
 ## Compute the following in Hilbert space
 
-# Computes the Norm - distance squared - in Hilbert space
+# Computes the Norm squared - distance squared - in Hilbert space
 
 distance_from_center <- function(x, clusters, kernelMatrix){
 		cluster=which(clusters==clusters[x]);
@@ -35,7 +35,7 @@ radii <- function(nclusters, clusters, kernelMatrix){
 						distance_from_center,
 						clusters=clusters,
 						kernelMatrix=kernelMatrix);
-		radii <- c(radii, sqrt(unname(quantile(distances, 0.6))))
+		radii <- c(radii, sqrt(unname(quantile(distances, 0.8))))
 		}
 	return(radii)
 }

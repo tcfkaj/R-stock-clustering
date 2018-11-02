@@ -5,12 +5,16 @@ library(imputeTS)
 # Turn time frame into indices
 initialize_time <- function(timeframe_, test_stock_){
 	x <- as.Date(timeframe_[1]);
+	print(x);
 	y <- as.Date(timeframe_[2]);
+	print(y);
 	while (!(x %in% test_stock_$Date)){
 		x <- x+1;
+		print(x)
 	};
 	while (!(y %in% test_stock_$Date)){
-		y <- y+1;
+		y <- y-1;
+		print(y)
 	};
 	return(c(which(test_stock_$Date == x),
 			which(test_stock_$Date == y)));

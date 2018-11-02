@@ -4,39 +4,37 @@ library(kernlab)
 
 ## Build simple data set
 
-grp <- c(rep("green",40)) %>%
-	c(rep("red", 24))
-x <- c(rep(1,10 )) %>%
-	c(rep(-1,10)) %>%
-	c(runif(10,min=-1, max=1)) %>%
-	c(runif(10, min=-1, max=1)) %>%
-	c(rep(-80,12)) %>%
-	c(runif(12, min=-80, max=80))
-y <- c(runif(10, min=-1, max=1)) %>%
-	c(runif(10, min=-1, max=1)) %>%
-	c(rep(1,10)) %>%
-	c(rep(-1,10)) %>%
-	c(runif(12,min=-80, max=80)) %>%
-	c(rep(80, 12))
+grp <- c(rep("red",4), rep("green", 4))
+x <- c(1,1,-1,-1,5,5,-5,-5)
+y <- c(1,-1,1,-1,5,-5,5,-5)
 test.data <- data.frame(X=x, Y=y, grp=grp)
-# plot(test.data$Y~test.data$X, pch=20, col=test.data$grp)
+test.data
+# plot(test.data$Y~test.data$X, pch=15, col=test.data$grp)
 
-## kernel k-means
+load("initial.Rda")
+ls()
+head(master.kkm)
 
 
-dd <- as.matrix(test.data[,-3])
-dd
-dd.kk <- kkmeans(dd, kernel=polydot(degree=3, offset=-5, scale=1), centers=2)
-dd.kk
-compute_cost(dd.kk)
-clusters <- dd.kk@.Data
-kernelM <- kernelMatrix(dd, kernel=polydot(degree=3, offset=-5, scale=1))
-cost_in_H(2, clusters, kernelM)
-smat <- smat(nclusters=2, clusters=clusters, kernelMatrix=kernelM)
-smat
-best <- best_run_H(dd, kernel=polydot(degree=3, offset=-5, scale=1), ncenters=2, nruns=100)
-best
-cost_in_H(2, best@.Data, kernelM)
+
+
+
+##  old stuff- kernel k-means
+
+
+# dd
+# dd <- as.matrix(test.data[,-3])
+# dd.kk <- kkmeans(dd, kernel=polydot(degree=3, offset=-5, scale=1), centers=2)
+# dd.kk
+# compute_cost(dd.kk)
+# clusters <- dd.kk@.Data
+# kernelM <- kernelMatrix(dd, kernel=polydot(degree=3, offset=-5, scale=1))
+# cost_in_H(2, clusters, kernelM)
+# smat <- smat(nclusters=2, clusters=clusters, kernelMatrix=kernelM)
+# smat
+# best <- best_run_H(dd, kernel=polydot(degree=3, offset=-5, scale=1), ncenters=2, nruns=100)
+# best
+# cost_in_H(2, best@.Data, kernelM)
 # kernelf(dd.kk)
 # length(size(dd.kk))
 ## playing around with kkmeans
