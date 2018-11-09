@@ -10,21 +10,44 @@ library(tidyverse)
 distance_from_center <- function(x, clusters, kernelMatrix){
 		cluster=which(clusters==clusters[x]);
 		r <- length(cluster);
-		k.x.x <- kernelMatrix[x,x]
-		part2 <- 0;
-		part3 <- 0;
+		X <- kernelMatrix[x,x]
+		Y <- 0;
+		Z <- 0;
 	for (i in cluster){
 		for (j in cluster){
-				part2 <- part2+kernelMatrix[i,j]
+				Y <- Y+kernelMatrix[i,j]
 			}
-	part3 <- part3+kernelMatrix[x,i]
+	Z <- Z+kernelMatrix[x,i]
 	}
-	part2 <- part2/r^2;
-	part3 <- part3*(-2/r);
-	distance <- k.x.x + part2 + part3
+	Y <- Y/r^2;
+	Z <- Z*(-2/r);
+	distance <- X + Y + Z
 	return(distance)
 }
 
+
+# Compute within-cluster sum of squares in Hilbert space
+
+wcss <- function(cluster_number, clusters, kernelMatrix){
+			cluster <- which(clusters==cluster_number);
+			distances <- sapply(cluster,
+						distance_from_center,
+						clusters=clusters,
+						kernelMatrix=kernelMatrix);
+			wcss <- sum(distances);
+			return(wcss)
+}
+
+
+# Compute total-wcss in Hilbert space
+
+total_wcss <- function(nclusters, clusters, kernelMatrix){
+			wcss <- c(1:nclusters) %>%
+				sapply(disp_sq, clusters=clusters,
+					kernelMatrix=kernelMatrix) %>%
+				sum();
+			return(wcss)
+}
 # Computes the radius of all clusters, by quantile
 
 radii <- function(nclusters, clusters, kernelMatrix){
